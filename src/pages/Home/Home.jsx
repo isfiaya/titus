@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { supabase } from "../../supabase/init";
 import EditExpenseModal from "../../components/EditExpenseModal";
 import TableExpenses from "../../components/TableExpenses";
 import expensesLogic from "../../logic/expensesLogic";
-import { useActions } from "kea";
+import { useActions, useValues } from "kea";
 
 function Home() {
-  const { saveExpense, loadExpenses } = useActions(expensesLogic);
+  const { expenses } = useValues(expensesLogic);
+  const { saveExpense, loadExpenses, deleteExpense } =
+    useActions(expensesLogic);
   const [formValues, setFormValues] = useState({
     claimerName: "",
     expenseDate: "",
@@ -67,6 +69,10 @@ function Home() {
 
     setFormValues((prevValues) => ({ ...prevValues, [name]: newValue }));
   };
+  useEffect(() => {
+    loadExpenses();
+    console.log("expenses", expenses);
+  }, []);
   return (
     <div>
       <form className="max-w-lg mx-auto" onSubmit={handleSubmit}>
@@ -137,7 +143,12 @@ function Home() {
           </button>
         </div>
       </form>
-      <TableExpenses toggleModal={toggleModal} l />
+      <TableExpenses
+        toggleModal={toggleModal}
+        expenses={expenses}
+        deleteExpense={deleteExpense}
+        loadExpenses={loadExpenses}
+      />
       {isOpen && <EditExpenseModal toggleModal={toggleModal} />}
     </div>
   );

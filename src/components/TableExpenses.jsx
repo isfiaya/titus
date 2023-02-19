@@ -1,17 +1,17 @@
-import { useActions, useValues } from "kea";
-import { useEffect } from "react";
-import expensesLogic from "../logic/expensesLogic.js";
+import { useActions } from "kea";
+import expensesLogic from "../logic/expensesLogic";
 
-function TableExpenses({ toggleModal }) {
-  const { expenses } = useValues(expensesLogic);
-  const { loadExpenses, deleteExpense } = useActions(expensesLogic);
+function TableExpenses({ toggleModal, expenses, deleteExpense, loadExpenses }) {
+  const { setSelectedExpenseId } = useActions(expensesLogic);
 
   async function handleDeleteExpense(id) {
     deleteExpense(id), loadExpenses();
   }
-  useEffect(() => {
-    loadExpenses();
-  }, []);
+  async function handleModalEditExpense(id) {
+    toggleModal();
+    console.log("id", id);
+    setSelectedExpenseId(id);
+  }
 
   return (
     <table className="table-auto w-full mb-12">
@@ -26,7 +26,7 @@ function TableExpenses({ toggleModal }) {
         </tr>
       </thead>
       <tbody>
-        {expenses.map((expense) => (
+        {expenses?.map((expense) => (
           <tr key={expense.id}>
             <td className="border px-4 py-2">{expense.claimer_name}</td>
             <td className="border px-4 py-2">{expense.expense_date}</td>
@@ -38,7 +38,7 @@ function TableExpenses({ toggleModal }) {
             <td className="border px-4 py-2">
               <button
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-                onClick={toggleModal}
+                onClick={() => handleModalEditExpense(expense.id)}
               >
                 Edit
               </button>
