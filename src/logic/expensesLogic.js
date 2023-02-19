@@ -8,14 +8,27 @@ const expensesLogic = kea({
     loadExpenses: true,
     saveExpense: (expense) => ({ expense }),
     deleteExpense: (id) => ({ id }),
+    setSelectedExpenseId: (id) => ({ id }),
+
 
   },
   reducers: {
     expenses: [[], {
       setExpenses: (_, { expenses }) => expenses,
-
       addExpense: (expenses, { expense }) => [...expenses, expense],
     }],
+    selectedExpenseId: [null, {
+      setSelectedExpenseId: (_, { id }) => id,
+    }],
+  },
+  selectors: {
+    selectedExpense: [
+      // (state) => state.expenses,
+      // (state) => state.selectedExpenseId,
+      (s) => [s.expenses, s.selectedExpenseId],
+      (expenses, selectedExpenseId) => expenses.find((expense) => expense.id === selectedExpenseId)
+    ]
+    ,
   },
   listeners: ({ actions }) => ({
     loadExpenses: async () => {

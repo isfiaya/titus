@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useActions, useValues } from "kea";
+import { useEffect, useState } from "react";
+import expensesLogic from "../logic/expensesLogic";
 
 function EditExpenseModal({ expense, toggleModal }) {
   const [claimerName, setClaimerName] = useState("");
@@ -19,6 +21,12 @@ function EditExpenseModal({ expense, toggleModal }) {
     // };
     // onSave(editedExpense);
   };
+  const { selectedExpenseId, selectedExpense } = useValues(expensesLogic);
+
+  useEffect(() => {
+    // console.log("edit component", selectedExpenseId);
+    console.log("selectedExpense", selectedExpense);
+  });
   return (
     <div className="fixed z-10 inset-0 overflow-y-auto">
       <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -56,7 +64,7 @@ function EditExpenseModal({ expense, toggleModal }) {
                     </label>
                     <select
                       className="block w-full p-2 border rounded"
-                      value={claimerName}
+                      value={selectedExpense.claimerName}
                       onChange={(e) => setClaimerName(e.target.value)}
                     >
                       <option>Employee A</option>
@@ -71,7 +79,7 @@ function EditExpenseModal({ expense, toggleModal }) {
                     <input
                       type="date"
                       className="block w-full p-2 border rounded"
-                      value={expenseDate}
+                      value={selectedExpense.expense_date}
                       onChange={(e) => setExpenseDate(e.target.value)}
                     />
                   </div>
@@ -81,7 +89,7 @@ function EditExpenseModal({ expense, toggleModal }) {
                     </label>
                     <textarea
                       className="block w-full p-2 border rounded"
-                      value={description}
+                      value={selectedExpense.description}
                       onChange={(e) => setDescription(e.target.value)}
                     />
                   </div>
@@ -92,7 +100,7 @@ function EditExpenseModal({ expense, toggleModal }) {
                     <input
                       type="number"
                       className="block w-full p-2 border rounded"
-                      value={amount}
+                      value={selectedExpense.amount}
                       onChange={(e) => setAmount(e.target.value)}
                     />
                   </div>
@@ -103,7 +111,7 @@ function EditExpenseModal({ expense, toggleModal }) {
                     <input
                       type="checkbox"
                       className="inline-block mr-2"
-                      checked={approved}
+                      checked={selectedExpense.approved}
                       onChange={(e) => setApproved(e.target.checked)}
                     />
                   </div>
