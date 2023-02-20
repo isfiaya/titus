@@ -5,7 +5,37 @@ import expensesLogic from "../logic/expensesLogic";
 const EditExpenseModal = ({ expense, toggleModal }) => {
   const { updateExpense, loadExpenses } = useActions(expensesLogic);
   const { selectedExpense } = useValues(expensesLogic);
+  const [formErrors, setFormErrors] = useState({});
+  const validateForm = () => {
+    const errors = {};
 
+    // Validate claimer name
+    if (!formValues.claimer_name) {
+      errors.claimer_name = "Claimer name is required";
+    }
+
+    // Validate expense date
+    if (!formValues.expense_date) {
+      errors.expense_date = "Date of expense is required";
+    }
+
+    // Validate description
+    if (!formValues.description) {
+      errors.description = "Description is required";
+    }
+
+    // Validate amount
+    if (!formValues.amount) {
+      errors.amount = "Amount is required";
+      console.log("ruub");
+    } else if (isNaN(formValues.amount)) {
+      errors.amount = "Amount must be a number";
+    } else if (Number(formValues.amount) <= 0) {
+      errors.amount = "Amount must be a positive number";
+    }
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
   const [formValues, setFormValues] = useState({
     claimer_name: selectedExpense.claimer_name,
     expense_date: selectedExpense.expense_date,
@@ -20,13 +50,20 @@ const EditExpenseModal = ({ expense, toggleModal }) => {
     const newValue = type === "checkbox" ? checked : value;
 
     setFormValues((prevValues) => ({ ...prevValues, [name]: newValue }));
+    setFormErrors((prevErrors) => {
+      // Create a new object with all the previous errors except for the current input field
+      const { [name]: removedError, ...rest } = prevErrors;
+      return rest;
+    });
   };
 
   const handleUpdateExpense = (e) => {
     e.preventDefault();
-    updateExpense(formValues);
-    loadExpenses();
-    toggleModal();
+    if (validateForm()) {
+      updateExpense(formValues);
+      loadExpenses();
+      toggleModal();
+    }
   };
 
   return (
@@ -72,7 +109,9 @@ const EditExpenseModal = ({ expense, toggleModal }) => {
                     </label>
                     <select
                       name="claimer_name"
-                      className="block w-full p-2 border rounded"
+                      className={`block w-full p-2 border rounded ${
+                        formErrors.claimer_name ? "border-red-500" : ""
+                      }`}
                       value={formValues.claimer_name}
                       onChange={handleFormChange}
                     >
@@ -80,6 +119,9 @@ const EditExpenseModal = ({ expense, toggleModal }) => {
                       <option>Employee B</option>
                       <option>Employee C</option>
                     </select>
+                    {formErrors.claimer_name && (
+                      <p className="text-red-500">{formErrors.claimer_name}</p>
+                    )}
                   </div>
                   <div className="my-4">
                     <label className="block font-medium text-gray-700">
@@ -88,21 +130,32 @@ const EditExpenseModal = ({ expense, toggleModal }) => {
                     <input
                       type="date"
                       name="expense_date"
-                      className="block w-full p-2 border rounded"
+                      className={`block w-full p-2 border rounded ${
+                        formErrors.expense_date ? "border-red-500" : ""
+                      }`}
                       value={formValues.expense_date}
                       onChange={handleFormChange}
                     />
+                    {formErrors.expense_date && (
+                      <p className="text-red-500">{formErrors.expense_date}</p>
+                    )}
                   </div>
                   <div className="my-4">
                     <label className="block font-medium text-gray-700">
                       Description
                     </label>
-                    <textarea
+                    <input
                       name="description"
-                      className="block w-full p-2 border rounded"
+                      type="text"
+                      className={` block w-full p-2 border rounded  ${
+                        formErrors.description ? "border-red-500" : ""
+                      }`}
                       value={formValues.description}
                       onChange={handleFormChange}
                     />
+                    {formErrors.description && (
+                      <p className="text-red-500">{formErrors.description}</p>
+                    )}
                   </div>
                   <div className="my-4">
                     <label className="block font-medium text-gray-700">
@@ -111,10 +164,15 @@ const EditExpenseModal = ({ expense, toggleModal }) => {
                     <input
                       type="number"
                       name="amount"
-                      className="block w-full p-2 border rounded"
                       value={formValues.amount}
                       onChange={handleFormChange}
+                      className={`block w-full p-2 border rounded ${
+                        formErrors.amount ? "border-red-500" : ""
+                      }`}
                     />
+                    {formErrors.amount && (
+                      <p className="text-red-500">{formErrors.amount}</p>
+                    )}
                   </div>
                   <div className="my-4">
                     <label className="block font-medium text-gray-700">
