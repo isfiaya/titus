@@ -1,36 +1,42 @@
 import { useActions, useValues } from "kea";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import expensesLogic from "../logic/expensesLogic";
 
-function EditExpenseModal({ expense, toggleModal }) {
-  const [claimerName, setClaimerName] = useState("");
-  const [expenseDate, setExpenseDate] = useState("");
-  const [description, setDescription] = useState("");
-  const [amount, setAmount] = useState(0);
-  const [approved, setApproved] = useState(false);
+const EditExpenseModal = ({ expense, toggleModal }) => {
+  const { updateExpense, loadExpenses } = useActions(expensesLogic);
+  const { selectedExpense } = useValues(expensesLogic);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // const editedExpense = {
-    //   id: expense.id,
-    //   claimerName,
-    //   expenseDate,
-    //   description,
-    //   amount,
-    //   approved,
-    // };
-    // onSave(editedExpense);
-  };
-  const { selectedExpenseId, selectedExpense } = useValues(expensesLogic);
-
-  useEffect(() => {
-    // console.log("edit component", selectedExpenseId);
-    console.log("selectedExpense", selectedExpense);
+  const [formValues, setFormValues] = useState({
+    claimer_name: selectedExpense.claimer_name,
+    expense_date: selectedExpense.expense_date,
+    description: selectedExpense.description,
+    amount: selectedExpense.amount,
+    approved: selectedExpense.approved,
+    id: selectedExpense.id,
   });
+  const handleFormChange = (e) => {
+    console.log("runnn");
+    const { name, value, type, checked } = e.target;
+    const newValue = type === "checkbox" ? checked : value;
+
+    setFormValues((prevValues) => ({ ...prevValues, [name]: newValue }));
+  };
+
+  const handleUpdateExpense = (e) => {
+    e.preventDefault();
+    updateExpense(formValues);
+    loadExpenses();
+    toggleModal();
+  };
+
   return (
     <div className="fixed z-10 inset-0 overflow-y-auto">
       <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-        <div className="fixed inset-0 transition-opacity" aria-hidden="true">
+        <div
+          className="fixed inset-0 transition-opacity"
+          onClick={toggleModal}
+          aria-hidden="true"
+        >
           <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
         </div>
 
@@ -56,16 +62,19 @@ function EditExpenseModal({ expense, toggleModal }) {
                 Edit Expense
               </h3>
               <div className="mt-2">
-                {/* Render form fields for editing expense */}
-                <form className="max-w-lg mx-auto" onSubmit={handleSubmit}>
+                <form
+                  className="max-w-lg mx-auto"
+                  onSubmit={handleUpdateExpense}
+                >
                   <div className="my-4">
                     <label className="block font-medium text-gray-700">
                       Claimer name
                     </label>
                     <select
+                      name="claimer_name"
                       className="block w-full p-2 border rounded"
-                      value={selectedExpense.claimerName}
-                      onChange={(e) => setClaimerName(e.target.value)}
+                      value={formValues.claimer_name}
+                      onChange={handleFormChange}
                     >
                       <option>Employee A</option>
                       <option>Employee B</option>
@@ -78,9 +87,10 @@ function EditExpenseModal({ expense, toggleModal }) {
                     </label>
                     <input
                       type="date"
+                      name="expense_date"
                       className="block w-full p-2 border rounded"
-                      value={selectedExpense.expense_date}
-                      onChange={(e) => setExpenseDate(e.target.value)}
+                      value={formValues.expense_date}
+                      onChange={handleFormChange}
                     />
                   </div>
                   <div className="my-4">
@@ -88,9 +98,10 @@ function EditExpenseModal({ expense, toggleModal }) {
                       Description
                     </label>
                     <textarea
+                      name="description"
                       className="block w-full p-2 border rounded"
-                      value={selectedExpense.description}
-                      onChange={(e) => setDescription(e.target.value)}
+                      value={formValues.description}
+                      onChange={handleFormChange}
                     />
                   </div>
                   <div className="my-4">
@@ -99,9 +110,10 @@ function EditExpenseModal({ expense, toggleModal }) {
                     </label>
                     <input
                       type="number"
+                      name="amount"
                       className="block w-full p-2 border rounded"
-                      value={selectedExpense.amount}
-                      onChange={(e) => setAmount(e.target.value)}
+                      value={formValues.amount}
+                      onChange={handleFormChange}
                     />
                   </div>
                   <div className="my-4">
@@ -110,22 +122,23 @@ function EditExpenseModal({ expense, toggleModal }) {
                     </label>
                     <input
                       type="checkbox"
+                      name="approved"
                       className="inline-block mr-2"
-                      checked={selectedExpense.approved}
-                      onChange={(e) => setApproved(e.target.checked)}
+                      checked={formValues.approved}
+                      onChange={handleFormChange}
                     />
                   </div>
                   <div className="my-4">
                     <button
                       type="submit"
-                      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mr-2"
                     >
                       Save
                     </button>
                     <button
-                      type="button"
-                      className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded ml-2"
                       onClick={toggleModal}
+                      type="button"
+                      className="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:text-gray-500 focus:outline-none  sm:ml-3 sm:w-auto sm:text-sm"
                     >
                       Cancel
                     </button>
@@ -134,18 +147,9 @@ function EditExpenseModal({ expense, toggleModal }) {
               </div>
             </div>
           </div>
-          {/* <div className="mt-5 sm:mt-6">
-            <button
-              type="button"
-              className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-500 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm"
-              onClick={toggleModal}
-            >
-              Save
-            </button>
-          </div> */}
         </div>
       </div>
     </div>
   );
-}
+};
 export default EditExpenseModal;
