@@ -57,13 +57,11 @@ const Home = () => {
     if (validateForm()) {
       try {
         setIsLoading(true);
-
         saveExpense(formValues);
-        loadExpenses();
         setShowAlert(true);
         setTimeout(() => {
           setShowAlert(false);
-        }, 3000);
+        }, 3500);
       } catch (err) {
         console.log("error in form add expenses", err);
       } finally {
@@ -84,8 +82,6 @@ const Home = () => {
     const newValue = type === "checkbox" ? checked : value;
 
     setFormValues((prevValues) => ({ ...prevValues, [name]: newValue }));
-    // clear errors when user starts typing
-    // setFormErrors({});
 
     setFormErrors((prevErrors) => {
       // Create a new object with all the previous errors except for the current input field
@@ -128,6 +124,7 @@ const Home = () => {
               value={formValues.claimer_name}
               onChange={handleFormChange}
             >
+              <option></option>
               <option>Employee A</option>
               <option>Employee B</option>
               <option>Employee C</option>

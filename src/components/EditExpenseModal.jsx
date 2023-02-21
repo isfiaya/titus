@@ -6,6 +6,8 @@ const EditExpenseModal = ({ expense, toggleModal }) => {
   const { updateExpense, loadExpenses } = useActions(expensesLogic);
   const { selectedExpense } = useValues(expensesLogic);
   const [formErrors, setFormErrors] = useState({});
+  const [updatedSuccessfully, setUpdatedSuccessfully] = useState(false);
+
   const validateForm = () => {
     const errors = {};
 
@@ -61,8 +63,7 @@ const EditExpenseModal = ({ expense, toggleModal }) => {
     e.preventDefault();
     if (validateForm()) {
       updateExpense(formValues);
-      loadExpenses();
-      toggleModal();
+      setUpdatedSuccessfully(true);
     }
   };
 
@@ -90,121 +91,145 @@ const EditExpenseModal = ({ expense, toggleModal }) => {
           aria-modal="true"
           aria-labelledby="modal-headline"
         >
-          <div>
-            <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-              <h3
-                className="text-lg leading-6 font-medium text-gray-900"
-                id="modal-headline"
-              >
-                Edit Expense
-              </h3>
-              <div className="mt-2">
-                <form
-                  className="max-w-lg mx-auto"
-                  onSubmit={handleUpdateExpense}
+          {updatedSuccessfully ? (
+            <>
+              {" "}
+              <div className="mt-3 text-center sm:mt-5">
+                <div className="mt-2">
+                  <p className="text-sm text-gray-500">
+                    Expense updated successfully
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm"
+                  onClick={toggleModal}
                 >
-                  <div className="my-4">
-                    <label className="block font-medium text-gray-700">
-                      Claimer name
-                    </label>
-                    <select
-                      name="claimer_name"
-                      className={`block w-full p-2 border rounded ${
-                        formErrors.claimer_name ? "border-red-500" : ""
-                      }`}
-                      value={formValues.claimer_name}
-                      onChange={handleFormChange}
-                    >
-                      <option>Employee A</option>
-                      <option>Employee B</option>
-                      <option>Employee C</option>
-                    </select>
-                    {formErrors.claimer_name && (
-                      <p className="text-red-500">{formErrors.claimer_name}</p>
-                    )}
-                  </div>
-                  <div className="my-4">
-                    <label className="block font-medium text-gray-700">
-                      Date of expense
-                    </label>
-                    <input
-                      type="date"
-                      name="expense_date"
-                      className={`block w-full p-2 border rounded ${
-                        formErrors.expense_date ? "border-red-500" : ""
-                      }`}
-                      value={formValues.expense_date}
-                      onChange={handleFormChange}
-                    />
-                    {formErrors.expense_date && (
-                      <p className="text-red-500">{formErrors.expense_date}</p>
-                    )}
-                  </div>
-                  <div className="my-4">
-                    <label className="block font-medium text-gray-700">
-                      Description
-                    </label>
-                    <input
-                      name="description"
-                      type="text"
-                      className={` block w-full p-2 border rounded  ${
-                        formErrors.description ? "border-red-500" : ""
-                      }`}
-                      value={formValues.description}
-                      onChange={handleFormChange}
-                    />
-                    {formErrors.description && (
-                      <p className="text-red-500">{formErrors.description}</p>
-                    )}
-                  </div>
-                  <div className="my-4">
-                    <label className="block font-medium text-gray-700">
-                      Amount (EUR)
-                    </label>
-                    <input
-                      type="number"
-                      name="amount"
-                      value={formValues.amount}
-                      onChange={handleFormChange}
-                      className={`block w-full p-2 border rounded ${
-                        formErrors.amount ? "border-red-500" : ""
-                      }`}
-                    />
-                    {formErrors.amount && (
-                      <p className="text-red-500">{formErrors.amount}</p>
-                    )}
-                  </div>
-                  <div className="my-4">
-                    <label className="block font-medium text-gray-700">
-                      Approved
-                    </label>
-                    <input
-                      type="checkbox"
-                      name="approved"
-                      className="inline-block mr-2"
-                      checked={formValues.approved}
-                      onChange={handleFormChange}
-                    />
-                  </div>
-                  <div className="my-4">
-                    <button
-                      type="submit"
-                      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mr-2"
-                    >
-                      Save
-                    </button>
-                    <button
-                      onClick={toggleModal}
-                      type="button"
-                      className="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:text-gray-500 focus:outline-none  sm:ml-3 sm:w-auto sm:text-sm"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </form>
+                  ok
+                </button>
               </div>
-            </div>
-          </div>
+            </>
+          ) : (
+            <>
+              <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                <h3
+                  className="text-lg leading-6 font-medium text-gray-900"
+                  id="modal-headline"
+                >
+                  Edit Expense
+                </h3>
+                <div className="mt-2">
+                  <form
+                    className="max-w-lg mx-auto"
+                    onSubmit={handleUpdateExpense}
+                  >
+                    <div className="my-4">
+                      <label className="block font-medium text-gray-700">
+                        Claimer name
+                      </label>
+                      <select
+                        name="claimer_name"
+                        className={`block w-full p-2 border rounded ${
+                          formErrors.claimer_name ? "border-red-500" : ""
+                        }`}
+                        value={formValues.claimer_name}
+                        onChange={handleFormChange}
+                      >
+                        <option>Employee A</option>
+                        <option>Employee B</option>
+                        <option>Employee C</option>
+                      </select>
+                      {formErrors.claimer_name && (
+                        <p className="text-red-500">
+                          {formErrors.claimer_name}
+                        </p>
+                      )}
+                    </div>
+                    <div className="my-4">
+                      <label className="block font-medium text-gray-700">
+                        Date of expense
+                      </label>
+                      <input
+                        type="date"
+                        name="expense_date"
+                        className={`block w-full p-2 border rounded ${
+                          formErrors.expense_date ? "border-red-500" : ""
+                        }`}
+                        value={formValues.expense_date}
+                        onChange={handleFormChange}
+                      />
+                      {formErrors.expense_date && (
+                        <p className="text-red-500">
+                          {formErrors.expense_date}
+                        </p>
+                      )}
+                    </div>
+                    <div className="my-4">
+                      <label className="block font-medium text-gray-700">
+                        Description
+                      </label>
+                      <input
+                        name="description"
+                        type="text"
+                        className={` block w-full p-2 border rounded  ${
+                          formErrors.description ? "border-red-500" : ""
+                        }`}
+                        value={formValues.description}
+                        onChange={handleFormChange}
+                      />
+                      {formErrors.description && (
+                        <p className="text-red-500">{formErrors.description}</p>
+                      )}
+                    </div>
+                    <div className="my-4">
+                      <label className="block font-medium text-gray-700">
+                        Amount (EUR)
+                      </label>
+                      <input
+                        type="number"
+                        name="amount"
+                        value={formValues.amount}
+                        onChange={handleFormChange}
+                        className={`block w-full p-2 border rounded ${
+                          formErrors.amount ? "border-red-500" : ""
+                        }`}
+                      />
+                      {formErrors.amount && (
+                        <p className="text-red-500">{formErrors.amount}</p>
+                      )}
+                    </div>
+                    <div className="my-4">
+                      <label className="block font-medium text-gray-700">
+                        Approved
+                      </label>
+                      <input
+                        type="checkbox"
+                        name="approved"
+                        className="inline-block mr-2"
+                        checked={formValues.approved}
+                        onChange={handleFormChange}
+                      />
+                    </div>
+                    <div className="my-4">
+                      <button
+                        type="submit"
+                        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mr-2"
+                      >
+                        Save
+                      </button>
+                      <button
+                        onClick={toggleModal}
+                        type="button"
+                        className="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:text-gray-500 focus:outline-none  sm:ml-3 sm:w-auto sm:text-sm"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

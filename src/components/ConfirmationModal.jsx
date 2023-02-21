@@ -1,8 +1,8 @@
 import { useActions, useValues } from "kea";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import expensesLogic from "../logic/expensesLogic";
 
-const ConfirmationModal = ({ expenseToDelete, toggleModalDelete }) => {
+const ConfirmationModal = ({ toggleModalDelete }) => {
   const { deleteExpense } = useActions(expensesLogic);
   const { selectedExpense } = useValues(expensesLogic);
   const [deletedSuccessfully, setDeletedSuccessfully] = useState(false);
@@ -10,9 +10,6 @@ const ConfirmationModal = ({ expenseToDelete, toggleModalDelete }) => {
     deleteExpense(selectedExpense.id);
     setDeletedSuccessfully(true);
   };
-  useEffect(() => {
-    console.log("modal delete", selectedExpense);
-  }, []);
 
   return (
     <div className="fixed z-10 inset-0 overflow-y-auto">
