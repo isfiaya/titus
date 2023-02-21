@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import EditExpenseModal from "../../components/EditExpenseModal";
-import TableExpenses from "../../components/TableExpenses";
 import expensesLogic from "../../logic/expensesLogic";
 import { useActions, useValues } from "kea";
+import Table from "../../components/Table";
 
 const Home = () => {
   const { expenses } = useValues(expensesLogic);
@@ -93,6 +93,12 @@ const Home = () => {
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
+  const columns = [
+    { key: "claimer_name", label: "Claimer" },
+    { key: "expense_date", label: "Date" },
+    { key: "description", label: "Description" },
+    { key: "amount", label: "Amount (EUR)" },
+  ];
 
   useEffect(() => {
     loadExpenses();
@@ -108,17 +114,17 @@ const Home = () => {
       )}
 
       <form
-        className="bg-white shadow-md rounded px-8 pt-2 pb-2 mb-4 mt-4"
+        className="bg-white shadow rounded px-8 pt-2 pb-2 mb-4 mt-4"
         onSubmit={handleSubmit}
       >
         <div className="my-4 grid gap-4 grid-cols-1 sm:grid-cols-2">
           <div>
-            <label className="block font-medium text-gray-700">
+            <label className="block font-medium text-gray-700 text-sm">
               Claimer name
             </label>
             <select
               name="claimer_name"
-              className={`block w-full p-2 border rounded ${
+              className={`bg-gray-50 border border-gray-300 outline-none text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${
                 formErrors.claimer_name ? "border-red-500" : ""
               }`}
               value={formValues.claimer_name}
@@ -134,13 +140,13 @@ const Home = () => {
             )}
           </div>
           <div>
-            <label className="block font-medium text-gray-700">
+            <label className="block font-medium text-gray-700 text-sm">
               Date of expense
             </label>
             <input
               type="date"
               name="expense_date"
-              className={`block w-full p-2 border rounded ${
+              className={`bg-gray-50 border border-gray-300 outline-none text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${
                 formErrors.expense_date ? "border-red-500" : ""
               }`}
               value={formValues.expense_date}
@@ -151,13 +157,13 @@ const Home = () => {
             )}
           </div>
           <div>
-            <label className="block font-medium text-gray-700">
+            <label className="block font-medium text-gray-700 text-sm">
               Description
             </label>
             <input
               type="text"
               name="description"
-              className={` block w-full p-2 border rounded  ${
+              className={`  bg-gray-50 border border-gray-300 outline-none text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  ${
                 formErrors.description ? "border-red-500" : ""
               }`}
               value={formValues.description}
@@ -168,13 +174,13 @@ const Home = () => {
             )}
           </div>
           <div>
-            <label className="block font-medium text-gray-700">
+            <label className="block font-medium text-gray-700 text-sm">
               Amount (EUR)
             </label>
             <input
               type="number"
               name="amount"
-              className={`block w-full p-2 border rounded ${
+              className={`bg-gray-50 border border-gray-300 outline-none text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${
                 formErrors.amount ? "border-red-500" : ""
               }`}
               value={formValues.amount}
@@ -192,13 +198,15 @@ const Home = () => {
               checked={formValues.approved}
               onChange={handleFormChange}
             />
-            <label className="block font-medium text-gray-700">Approved</label>
+            <label className="block font-medium text-gray-700 text-sm">
+              Approved
+            </label>
           </div>
 
           <div className="sm:flex sm:items-center">
             <button
               type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 sm:ml-auto"
+              className="bg-blue-500 text-white px-4  py-2 rounded hover:bg-blue-600 sm:ml-auto  font-medium text-sm "
             >
               {isLoading ? "loading..." : "Add expense"}
             </button>
@@ -206,9 +214,10 @@ const Home = () => {
         </div>
       </form>
 
-      <TableExpenses
+      <Table
+        data={expenses}
+        columns={columns}
         toggleModal={toggleModal}
-        expenses={expenses}
         deleteExpense={deleteExpense}
         loadExpenses={loadExpenses}
       />

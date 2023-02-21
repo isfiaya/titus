@@ -69,7 +69,7 @@ const EditExpenseModal = ({ expense, toggleModal }) => {
 
   return (
     <div className="fixed z-10 inset-0 overflow-y-auto">
-      <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+      <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:p-0">
         <div
           className="fixed inset-0 transition-opacity"
           onClick={toggleModal}
@@ -78,31 +78,17 @@ const EditExpenseModal = ({ expense, toggleModal }) => {
           <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
         </div>
 
-        <span
-          className="hidden sm:inline-block sm:align-middle sm:h-screen"
-          aria-hidden="true"
-        >
-          &#8203;
-        </span>
-
-        <div
-          className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="modal-headline"
-        >
+        <div className="inline-block  bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full ">
           {updatedSuccessfully ? (
             <>
-              {" "}
-              <div className="mt-3 text-center sm:mt-5">
-                <div className="mt-2">
-                  <p className="text-sm text-gray-500">
-                    Expense updated successfully
-                  </p>
-                </div>
+              <div className="text-center ">
+                <p className="text-base text-gray-500">
+                  Expense updated successfully
+                </p>
+
                 <button
                   type="button"
-                  className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm"
+                  className="mt-3 w-full  rounded border border-gray-300  px-4 py-2 bg-white  font-medium text-gray-700 hover:bg-gray-50  text-sm"
                   onClick={toggleModal}
                 >
                   ok
@@ -111,7 +97,7 @@ const EditExpenseModal = ({ expense, toggleModal }) => {
             </>
           ) : (
             <>
-              <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+              <div className="mt-3  sm:mt-0 sm:ml-4 text-left">
                 <h3
                   className="text-lg leading-6 font-medium text-gray-900"
                   id="modal-headline"
@@ -124,12 +110,12 @@ const EditExpenseModal = ({ expense, toggleModal }) => {
                     onSubmit={handleUpdateExpense}
                   >
                     <div className="my-4">
-                      <label className="block font-medium text-gray-700">
+                      <label className="block font-medium text-gray-700 text-sm">
                         Claimer name
                       </label>
                       <select
                         name="claimer_name"
-                        className={`block w-full p-2 border rounded ${
+                        className={`bg-gray-50 border border-gray-300 outline-none text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  ${
                           formErrors.claimer_name ? "border-red-500" : ""
                         }`}
                         value={formValues.claimer_name}
@@ -146,13 +132,13 @@ const EditExpenseModal = ({ expense, toggleModal }) => {
                       )}
                     </div>
                     <div className="my-4">
-                      <label className="block font-medium text-gray-700">
+                      <label className="block font-medium text-gray-700 text-sm">
                         Date of expense
                       </label>
                       <input
                         type="date"
                         name="expense_date"
-                        className={`block w-full p-2 border rounded ${
+                        className={`bg-gray-50 border border-gray-300 outline-none text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  ${
                           formErrors.expense_date ? "border-red-500" : ""
                         }`}
                         value={formValues.expense_date}
@@ -165,13 +151,13 @@ const EditExpenseModal = ({ expense, toggleModal }) => {
                       )}
                     </div>
                     <div className="my-4">
-                      <label className="block font-medium text-gray-700">
+                      <label className="block font-medium text-gray-700 text-sm">
                         Description
                       </label>
                       <input
                         name="description"
                         type="text"
-                        className={` block w-full p-2 border rounded  ${
+                        className={` bg-gray-50 border border-gray-300 outline-none text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  ${
                           formErrors.description ? "border-red-500" : ""
                         }`}
                         value={formValues.description}
@@ -182,7 +168,7 @@ const EditExpenseModal = ({ expense, toggleModal }) => {
                       )}
                     </div>
                     <div className="my-4">
-                      <label className="block font-medium text-gray-700">
+                      <label className="block font-medium text-gray-700 text-sm">
                         Amount (EUR)
                       </label>
                       <input
@@ -190,7 +176,7 @@ const EditExpenseModal = ({ expense, toggleModal }) => {
                         name="amount"
                         value={formValues.amount}
                         onChange={handleFormChange}
-                        className={`block w-full p-2 border rounded ${
+                        className={`bg-gray-50 border border-gray-300 outline-none text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${
                           formErrors.amount ? "border-red-500" : ""
                         }`}
                       />
@@ -198,10 +184,7 @@ const EditExpenseModal = ({ expense, toggleModal }) => {
                         <p className="text-red-500">{formErrors.amount}</p>
                       )}
                     </div>
-                    <div className="my-4">
-                      <label className="block font-medium text-gray-700">
-                        Approved
-                      </label>
+                    <div className="my-4 flex items-center">
                       <input
                         type="checkbox"
                         name="approved"
@@ -209,18 +192,21 @@ const EditExpenseModal = ({ expense, toggleModal }) => {
                         checked={formValues.approved}
                         onChange={handleFormChange}
                       />
+                      <label className="block font-medium text-gray-700 text-sm">
+                        Approved
+                      </label>
                     </div>
-                    <div className="my-4">
+                    <div className="my-4 flex">
                       <button
                         type="submit"
-                        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mr-2"
+                        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mr-2 font-medium text-sm "
                       >
                         Save
                       </button>
                       <button
                         onClick={toggleModal}
                         type="button"
-                        className="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:text-gray-500 focus:outline-none  sm:ml-3 sm:w-auto sm:text-sm"
+                        className=" rounded border border-gray-300  px-4 py-2 bg-white  font-medium text-gray-700 hover:text-gray-500 focus:outline-none  text-sm"
                       >
                         Cancel
                       </button>

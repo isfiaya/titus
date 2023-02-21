@@ -63,7 +63,7 @@ const Stats = () => {
           <select
             id="year-select"
             name="year-select"
-            className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="bg-gray-50 border border-gray-300 outline-none text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             value={selectedYear}
             onChange={handleChange}
           >
