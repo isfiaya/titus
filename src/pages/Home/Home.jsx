@@ -104,7 +104,7 @@ const Home = () => {
     loadExpenses();
   }, []);
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-auto pt-8 px-4 ">
       {showAlert && (
         <div className="rounded-md bg-[#C4F9E2] p-4 absolute bottom-12 left-4 animate-[wiggle_2s_ease-in-out]">
           <p className="flex items-center text-sm font-medium text-[#004434]">
@@ -114,7 +114,7 @@ const Home = () => {
       )}
 
       <form
-        className="bg-white shadow rounded px-8 pt-2 pb-2 mb-4 mt-4"
+        className="bg-white shadow rounded px-8 pt-2 pb-2 mb-4 "
         onSubmit={handleSubmit}
       >
         <div className="my-4 grid gap-4 grid-cols-1 sm:grid-cols-2">
