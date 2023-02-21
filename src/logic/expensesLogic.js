@@ -14,7 +14,9 @@ const expensesLogic = kea({
   reducers: {
     expenses: [[], {
       setExpenses: (_, { expenses }) => expenses,
-      addExpense: (expenses, { expense }) => [...expenses, expense],
+      addExpense: (expenses, { expense }) => [expense, ...expenses],
+      updateExpense: (expenses, { expense }) => expenses.map((e) => (e.id === expense.id ? expense : e)),
+      deleteExpense: (expenses, { id }) => expenses.filter((item) => item.id !== id),
     }],
     selectedExpenseId: [null, {
       setSelectedExpenseId: (_, { id }) => id,
@@ -40,19 +42,19 @@ const expensesLogic = kea({
       }
     },
     saveExpense: async ({ expense }) => {
-      const { error } = await supabase
+
+      const { data, error } = await supabase
         .from('expenses')
-        .insert(expense);
+        .insert(expense).select();
 
       if (error) {
         console.log(error);
       } else {
         console.log("Expense inserted successfully:");
-
+        actions.addExpense(data[0]);
       }
     },
     updateExpense: async ({ expense }) => {
-      console.log("store", expense)
       const { error } = await supabase
         .from('expenses')
         .update(expense).eq('id', expense.id);
@@ -61,7 +63,6 @@ const expensesLogic = kea({
         console.log(error);
       } else {
         console.log("Expense updated successfully:");
-
       }
     },
     deleteExpense: async ({ id }) => {
