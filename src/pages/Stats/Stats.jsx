@@ -41,7 +41,7 @@ const Stats = () => {
       {
         label: "Expenses (EUR)",
         data: groupedExpenses,
-        backgroundColor: "#3182CE",
+        backgroundColor: "#3b82f6",
       },
     ],
   };

@@ -1,97 +1,120 @@
-import { useActions } from "kea";
-import React, { useState } from "react";
+import { useActions, useValues } from "kea";
+import React, { useEffect, useState } from "react";
 import expensesLogic from "../logic/expensesLogic";
-import ConfirmationModal from "./ConfirmationModal";
+import DeleteExpenseModal from "./DeleteExpenseModal";
+import { createPortal } from "react-dom";
+import EditExpenseModal from "./EditExpenseModal";
 
-function Table({ data, columns, pageSize = 5, toggleModal }) {
+const modalRoot = document.getElementById("modal-root");
+
+function Table({ pageSize = 5 }) {
   const [currentPage, setCurrentPage] = useState(1);
+  const { expenses } = useValues(expensesLogic);
+  const { setSelectedExpenseId, loadExpenses } = useActions(expensesLogic);
+
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
-  const pageData = data.slice(startIndex, endIndex);
-  const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
-  const { setSelectedExpenseId } = useActions(expensesLogic);
+  const pageData = expenses.slice(startIndex, endIndex);
+  const [deleteModelOpen, setDeleteModalOpen] = useState(false);
+  const [editModelOpen, setEditModelOpen] = useState(false);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
-    console.log("run", page);
   };
   const handleModalEditExpense = async (id) => {
     toggleModal();
-    console.log("id", id);
     setSelectedExpenseId(id);
   };
   const handleModalDeletExpense = async (id) => {
-    setDeleteConfirmationOpen(true);
+    setDeleteModalOpen(true);
     setSelectedExpenseId(id);
   };
   const toggleModalDelete = () => {
-    setDeleteConfirmationOpen(!deleteConfirmationOpen);
+    setDeleteModalOpen(!deleteModelOpen);
+    console.log("deleteModelOpen", deleteModelOpen);
   };
-
-  const pageCount = Math.ceil(data.length / pageSize);
+  const toggleModal = () => {
+    setEditModelOpen(!editModelOpen);
+  };
+  const pageCount = Math.ceil(expenses.length / pageSize);
+  const columns = [
+    { key: "claimer_name", label: "Claimer" },
+    { key: "expense_date", label: "Date" },
+    { key: "description", label: "Description" },
+    { key: "amount", label: "Amount (EUR)" },
+  ];
+  useEffect(() => {
+    loadExpenses();
+  }, []);
 
   return (
     <div className="flex flex-col mb-8">
       <div className=" overflow-x-auto lg:-mx-8">
         <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
           <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  {columns.map((column) => (
+            {expenses.length ? (
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    {columns.map((column) => (
+                      <th
+                        key={column.key}
+                        scope="col"
+                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        {column.label}
+                      </th>
+                    ))}
                     <th
-                      key={column.key}
                       scope="col"
                       className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
-                      {column.label}
+                      Approved
                     </th>
-                  ))}
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Approved
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  ></th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {pageData.map((row, index) => (
-                  <tr key={index}>
-                    {columns.map((column) => (
-                      <td
-                        key={column.key}
-                        className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
-                      >
-                        {row[column.key]}
-                      </td>
-                    ))}
-
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {row["approved"] ? "Yes" : "No"}
-                    </td>
-                    <td className="px-6 py-4 flex">
-                      <button
-                        className="bg-blue-500 hover:bg-blue-700 text-white  py-2 px-4 rounded mr-2 ml-auto font-medium text-sm "
-                        onClick={() => handleModalEditExpense(row.id)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="bg-red-500 hover:bg-red-700 text-white  py-2 px-4 rounded font-medium text-sm"
-                        onClick={() => handleModalDeletExpense(row.id)}
-                      >
-                        Delete
-                      </button>
-                    </td>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    ></th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {pageData.map((row, index) => (
+                    <tr key={index}>
+                      {columns.map((column) => (
+                        <td
+                          key={column.key}
+                          className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                        >
+                          {row[column.key]}
+                        </td>
+                      ))}
+
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {row["approved"] ? "Yes" : "No"}
+                      </td>
+                      <td className="px-6 py-4 flex">
+                        <button
+                          className="bg-blue-500 hover:bg-blue-700 text-white  py-2 px-4 rounded mr-2 ml-auto font-medium text-sm "
+                          onClick={() => handleModalEditExpense(row.id)}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className="bg-red-500 hover:bg-red-700 text-white  py-2 px-4 rounded font-medium text-sm"
+                          onClick={() => handleModalDeletExpense(row.id)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <div className="text-center">
+                <p className="text-base text-gray-500">No expense to show</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -110,9 +133,13 @@ function Table({ data, columns, pageSize = 5, toggleModal }) {
           </button>
         ))}
       </div>
-      {deleteConfirmationOpen && (
-        <ConfirmationModal toggleModalDelete={toggleModalDelete} />
-      )}
+      {deleteModelOpen &&
+        createPortal(
+          <DeleteExpenseModal toggleModalDelete={toggleModalDelete} />,
+          modalRoot
+        )}
+      {editModelOpen &&
+        createPortal(<EditExpenseModal toggleModal={toggleModal} />, modalRoot)}
     </div>
   );
 }

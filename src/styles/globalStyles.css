@@ -3,6 +3,5 @@
 @tailwind utilities;
 
 nav a.active {
-  color: white;
-  background-color: rgb(55 65 81);
+  background-color: #7da4e3;
 }

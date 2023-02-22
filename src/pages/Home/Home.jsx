@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import EditExpenseModal from "../../components/EditExpenseModal";
 import expensesLogic from "../../logic/expensesLogic";
-import { useActions, useValues } from "kea";
-import Table from "../../components/Table";
+import { useActions } from "kea";
+import Spinner from "../../components/shared/Spinner";
+// import Table from "../../components/Table";
+// import Spinner from "../../components/shared/Spinner";
+const Table = lazy(() => import("../../components/Table"));
 
 const Home = () => {
-  const { expenses } = useValues(expensesLogic);
-  const { saveExpense, loadExpenses, deleteExpense } =
-    useActions(expensesLogic);
+  const { saveExpense } = useActions(expensesLogic);
   const [showAlert, setShowAlert] = useState(false);
   const [formErrors, setFormErrors] = useState({});
 
@@ -67,7 +68,7 @@ const Home = () => {
       } finally {
         setIsLoading(false);
         setFormValues({
-          claimer_name: "Employee A",
+          claimer_name: "",
           expense_date: "",
           description: "",
           amount: 0,
@@ -93,16 +94,7 @@ const Home = () => {
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
-  const columns = [
-    { key: "claimer_name", label: "Claimer" },
-    { key: "expense_date", label: "Date" },
-    { key: "description", label: "Description" },
-    { key: "amount", label: "Amount (EUR)" },
-  ];
 
-  useEffect(() => {
-    loadExpenses();
-  }, []);
   return (
     <div className="max-w-6xl mx-auto pt-8 px-4 ">
       {showAlert && (
@@ -213,15 +205,9 @@ const Home = () => {
           </div>
         </div>
       </form>
-
-      <Table
-        data={expenses}
-        columns={columns}
-        toggleModal={toggleModal}
-        deleteExpense={deleteExpense}
-        loadExpenses={loadExpenses}
-      />
-      {isOpen && <EditExpenseModal toggleModal={toggleModal} />}
+      <Suspense fallback={<Spinner />}>
+        <Table />
+      </Suspense>
     </div>
   );
 };

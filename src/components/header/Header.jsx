@@ -14,7 +14,7 @@ function Navbar() {
   let activeClassName = "underline";
 
   return (
-    <nav className="bg-gray-800 ">
+    <nav className="bg-blue-500 ">
       <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
         <div className="relative flex items-center justify-between h-16">
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -71,13 +71,13 @@ function Navbar() {
               <div className="flex space-x-4">
                 <NavLink
                   to="/"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  className="text-white hover:bg-[#7da4e3] hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                 >
                   Expenses
                 </NavLink>
                 <NavLink
                   to="/stats"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  className="text-white hover:bg-[#7da4e3] hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                 >
                   Stats
                 </NavLink>
@@ -95,14 +95,14 @@ function Navbar() {
           <NavLink
             to="/"
             activeclassname="bg-gray-900 text-white"
-            className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md  font-medium text-sm"
+            className="text-white hover:bg-[#7da4e3] hover:text-white block px-3 py-2 rounded-md  font-medium text-sm"
           >
             Expenses
           </NavLink>
           <NavLink
             to="/stats"
             activeclassname="bg-gray-900 text-white"
-            className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md font-medium text-sm"
+            className="text-white hover:bg-[#7da4e3] hover:text-white block px-3 py-2 rounded-md font-medium text-sm"
           >
             Stats
           </NavLink>
