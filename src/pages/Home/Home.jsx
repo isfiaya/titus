@@ -1,10 +1,8 @@
 import { useState, lazy, Suspense } from "react";
-import EditExpenseModal from "../../components/EditExpenseModal";
 import expensesLogic from "../../logic/expensesLogic";
 import { useActions } from "kea";
 import Spinner from "../../components/shared/Spinner";
-// import Table from "../../components/Table";
-// import Spinner from "../../components/shared/Spinner";
+import Alert from "../../components/shared/Alert";
 const Table = lazy(() => import("../../components/Table"));
 
 const Home = () => {
@@ -19,7 +17,7 @@ const Home = () => {
     amount: 0,
     approved: false,
   });
-  const [isOpen, setIsOpen] = useState(false);
+
   const [isLoading, setIsLoading] = useState(false);
   const validateForm = () => {
     const errors = {};
@@ -91,32 +89,18 @@ const Home = () => {
     });
   };
 
-  const toggleModal = () => {
-    setIsOpen(!isOpen);
-  };
-
   return (
     <div className="max-w-6xl mx-auto pt-8 px-4 ">
-      {showAlert && (
-        <div className="rounded-md bg-[#C4F9E2] p-4 absolute bottom-12 left-4 animate-[wiggle_2s_ease-in-out]">
-          <p className="flex items-center text-sm font-medium text-[#004434]">
-            Your expense has been added successfully
-          </p>
-        </div>
-      )}
-
       <form
         className="bg-white shadow rounded px-8 pt-2 pb-2 mb-4 "
         onSubmit={handleSubmit}
       >
         <div className="my-4 grid gap-4 grid-cols-1 sm:grid-cols-2">
           <div>
-            <label className="block font-medium text-gray-700 text-sm">
-              Claimer name
-            </label>
+            <label className="form-label">Claimer name</label>
             <select
               name="claimer_name"
-              className={`bg-gray-50 border border-gray-300 outline-none text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${
+              className={`form-input ${
                 formErrors.claimer_name ? "border-red-500" : ""
               }`}
               value={formValues.claimer_name}
@@ -132,13 +116,11 @@ const Home = () => {
             )}
           </div>
           <div>
-            <label className="block font-medium text-gray-700 text-sm">
-              Date of expense
-            </label>
+            <label className="form-label">Date of expense</label>
             <input
               type="date"
               name="expense_date"
-              className={`bg-gray-50 border border-gray-300 outline-none text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${
+              className={`form-input${
                 formErrors.expense_date ? "border-red-500" : ""
               }`}
               value={formValues.expense_date}
@@ -149,13 +131,11 @@ const Home = () => {
             )}
           </div>
           <div>
-            <label className="block font-medium text-gray-700 text-sm">
-              Description
-            </label>
+            <label className="form-label">Description</label>
             <input
               type="text"
               name="description"
-              className={`  bg-gray-50 border border-gray-300 outline-none text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  ${
+              className={`  form-input  ${
                 formErrors.description ? "border-red-500" : ""
               }`}
               value={formValues.description}
@@ -166,13 +146,11 @@ const Home = () => {
             )}
           </div>
           <div>
-            <label className="block font-medium text-gray-700 text-sm">
-              Amount (EUR)
-            </label>
+            <label className="form-label">Amount (EUR)</label>
             <input
               type="number"
               name="amount"
-              className={`bg-gray-50 border border-gray-300 outline-none text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${
+              className={`form-input${
                 formErrors.amount ? "border-red-500" : ""
               }`}
               value={formValues.amount}
@@ -190,16 +168,11 @@ const Home = () => {
               checked={formValues.approved}
               onChange={handleFormChange}
             />
-            <label className="block font-medium text-gray-700 text-sm">
-              Approved
-            </label>
+            <label className="form-label">Approved</label>
           </div>
 
           <div className="sm:flex sm:items-center">
-            <button
-              type="submit"
-              className="bg-blue-500 text-white px-4  py-2 rounded hover:bg-blue-600 sm:ml-auto  font-medium text-sm "
-            >
+            <button type="submit" className="sm:ml-auto btn-primary ">
               {isLoading ? "loading..." : "Add expense"}
             </button>
           </div>
@@ -208,6 +181,7 @@ const Home = () => {
       <Suspense fallback={<Spinner />}>
         <Table />
       </Suspense>
+      {showAlert && <Alert />}
     </div>
   );
 };

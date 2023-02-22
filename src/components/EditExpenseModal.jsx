@@ -1,9 +1,11 @@
 import { useActions, useValues } from "kea";
 import { useState } from "react";
 import expensesLogic from "../logic/expensesLogic";
+import Modal from "./shared/Modal";
+import SuccessMessage from "./shared/SuccessMessage";
 
-const EditExpenseModal = ({ expense, toggleModal }) => {
-  const { updateExpense, loadExpenses } = useActions(expensesLogic);
+const EditExpenseModal = ({ toggleModalEdit }) => {
+  const { updateExpense } = useActions(expensesLogic);
   const { selectedExpense } = useValues(expensesLogic);
   const [formErrors, setFormErrors] = useState({});
   const [updatedSuccessfully, setUpdatedSuccessfully] = useState(false);
@@ -68,157 +70,108 @@ const EditExpenseModal = ({ expense, toggleModal }) => {
   };
 
   return (
-    <div className="fixed z-10 inset-0 overflow-y-auto">
-      <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:p-0">
-        <div
-          className="fixed inset-0 transition-opacity"
-          onClick={toggleModal}
-          aria-hidden="true"
-        >
-          <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
-        </div>
-
-        <div className="inline-block  bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full ">
-          {updatedSuccessfully ? (
-            <>
-              <div className="text-center ">
-                <p className="text-base text-gray-500">
-                  Expense updated successfully
-                </p>
-
-                <button
-                  type="button"
-                  className="mt-3 w-full  rounded border border-gray-300  px-4 py-2 bg-white  font-medium text-gray-700 hover:bg-gray-50  text-sm"
-                  onClick={toggleModal}
-                >
-                  ok
-                </button>
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="mt-3  sm:mt-0 sm:ml-4 text-left">
-                <h3
-                  className="text-lg leading-6 font-medium text-gray-900"
-                  id="modal-headline"
-                >
-                  Edit Expense
-                </h3>
-                <div className="mt-2">
-                  <form
-                    className="max-w-lg mx-auto"
-                    onSubmit={handleUpdateExpense}
+    <Modal toggleModal={toggleModalEdit}>
+      {updatedSuccessfully ? (
+        <SuccessMessage toggleModal={toggleModalEdit} />
+      ) : (
+        <>
+          <div className="mt-3  sm:mt-0 sm:ml-4 text-left">
+            <h3 className="text-lg leading-6 font-medium text-gray-900">
+              Edit Expense
+            </h3>
+            <div className="mt-2">
+              <form className="max-w-lg mx-auto" onSubmit={handleUpdateExpense}>
+                <div className="my-4">
+                  <label className="form-label">Claimer name</label>
+                  <select
+                    name="claimer_name"
+                    className={`form-input ${
+                      formErrors.claimer_name ? "border-red-500" : ""
+                    }`}
+                    value={formValues.claimer_name}
+                    onChange={handleFormChange}
                   >
-                    <div className="my-4">
-                      <label className="block font-medium text-gray-700 text-sm">
-                        Claimer name
-                      </label>
-                      <select
-                        name="claimer_name"
-                        className={`bg-gray-50 border border-gray-300 outline-none text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  ${
-                          formErrors.claimer_name ? "border-red-500" : ""
-                        }`}
-                        value={formValues.claimer_name}
-                        onChange={handleFormChange}
-                      >
-                        <option>Employee A</option>
-                        <option>Employee B</option>
-                        <option>Employee C</option>
-                      </select>
-                      {formErrors.claimer_name && (
-                        <p className="text-red-500">
-                          {formErrors.claimer_name}
-                        </p>
-                      )}
-                    </div>
-                    <div className="my-4">
-                      <label className="block font-medium text-gray-700 text-sm">
-                        Date of expense
-                      </label>
-                      <input
-                        type="date"
-                        name="expense_date"
-                        className={`bg-gray-50 border border-gray-300 outline-none text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  ${
-                          formErrors.expense_date ? "border-red-500" : ""
-                        }`}
-                        value={formValues.expense_date}
-                        onChange={handleFormChange}
-                      />
-                      {formErrors.expense_date && (
-                        <p className="text-red-500">
-                          {formErrors.expense_date}
-                        </p>
-                      )}
-                    </div>
-                    <div className="my-4">
-                      <label className="block font-medium text-gray-700 text-sm">
-                        Description
-                      </label>
-                      <input
-                        name="description"
-                        type="text"
-                        className={` bg-gray-50 border border-gray-300 outline-none text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  ${
-                          formErrors.description ? "border-red-500" : ""
-                        }`}
-                        value={formValues.description}
-                        onChange={handleFormChange}
-                      />
-                      {formErrors.description && (
-                        <p className="text-red-500">{formErrors.description}</p>
-                      )}
-                    </div>
-                    <div className="my-4">
-                      <label className="block font-medium text-gray-700 text-sm">
-                        Amount (EUR)
-                      </label>
-                      <input
-                        type="number"
-                        name="amount"
-                        value={formValues.amount}
-                        onChange={handleFormChange}
-                        className={`bg-gray-50 border border-gray-300 outline-none text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${
-                          formErrors.amount ? "border-red-500" : ""
-                        }`}
-                      />
-                      {formErrors.amount && (
-                        <p className="text-red-500">{formErrors.amount}</p>
-                      )}
-                    </div>
-                    <div className="my-4 flex items-center">
-                      <input
-                        type="checkbox"
-                        name="approved"
-                        className="inline-block mr-2"
-                        checked={formValues.approved}
-                        onChange={handleFormChange}
-                      />
-                      <label className="block font-medium text-gray-700 text-sm">
-                        Approved
-                      </label>
-                    </div>
-                    <div className="my-4 flex">
-                      <button
-                        type="submit"
-                        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mr-2 font-medium text-sm "
-                      >
-                        Save
-                      </button>
-                      <button
-                        onClick={toggleModal}
-                        type="button"
-                        className=" rounded border border-gray-300  px-4 py-2 bg-white  font-medium text-gray-700 hover:text-gray-500 focus:outline-none  text-sm"
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </form>
+                    <option>Employee A</option>
+                    <option>Employee B</option>
+                    <option>Employee C</option>
+                  </select>
+                  {formErrors.claimer_name && (
+                    <p className="text-red-500">{formErrors.claimer_name}</p>
+                  )}
                 </div>
-              </div>
-            </>
-          )}
-        </div>
-      </div>
-    </div>
+                <div className="my-4">
+                  <label className="form-label">Date of expense</label>
+                  <input
+                    type="date"
+                    name="expense_date"
+                    className={`form-input${
+                      formErrors.expense_date ? "border-red-500" : ""
+                    }`}
+                    value={formValues.expense_date}
+                    onChange={handleFormChange}
+                  />
+                  {formErrors.expense_date && (
+                    <p className="text-red-500">{formErrors.expense_date}</p>
+                  )}
+                </div>
+                <div className="my-4">
+                  <label className="form-label">Description</label>
+                  <input
+                    name="description"
+                    type="text"
+                    className={`form-input ${
+                      formErrors.description ? "border-red-500" : ""
+                    }`}
+                    value={formValues.description}
+                    onChange={handleFormChange}
+                  />
+                  {formErrors.description && (
+                    <p className="text-red-500">{formErrors.description}</p>
+                  )}
+                </div>
+                <div className="my-4">
+                  <label className="form-label">Amount (EUR)</label>
+                  <input
+                    type="number"
+                    name="amount"
+                    value={formValues.amount}
+                    onChange={handleFormChange}
+                    className={`form-input${
+                      formErrors.amount ? "border-red-500" : ""
+                    }`}
+                  />
+                  {formErrors.amount && (
+                    <p className="text-red-500">{formErrors.amount}</p>
+                  )}
+                </div>
+                <div className="my-4 flex items-center">
+                  <input
+                    type="checkbox"
+                    name="approved"
+                    className="inline-block mr-2"
+                    checked={formValues.approved}
+                    onChange={handleFormChange}
+                  />
+                  <label className="form-label">Approved</label>
+                </div>
+                <div className="my-4 flex">
+                  <button type="submit" className="btn-primary mr-2">
+                    Save
+                  </button>
+                  <button
+                    onClick={toggleModalEdit}
+                    type="button"
+                    className="btn-secondary"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </>
+      )}
+    </Modal>
   );
 };
 export default EditExpenseModal;

@@ -61,9 +61,8 @@ const Stats = () => {
         </label>
         <div className="flex-1 mt-1 relative rounded-md shadow-sm">
           <select
-            id="year-select"
             name="year-select"
-            className="bg-gray-50 border border-gray-300 outline-none text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            className="form-input"
             value={selectedYear}
             onChange={handleChange}
           >

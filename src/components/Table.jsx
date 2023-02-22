@@ -22,7 +22,7 @@ function Table({ pageSize = 5 }) {
     setCurrentPage(page);
   };
   const handleModalEditExpense = async (id) => {
-    toggleModal();
+    toggleModalEdit();
     setSelectedExpenseId(id);
   };
   const handleModalDeletExpense = async (id) => {
@@ -33,7 +33,7 @@ function Table({ pageSize = 5 }) {
     setDeleteModalOpen(!deleteModelOpen);
     console.log("deleteModelOpen", deleteModelOpen);
   };
-  const toggleModal = () => {
+  const toggleModalEdit = () => {
     setEditModelOpen(!editModelOpen);
   };
   const pageCount = Math.ceil(expenses.length / pageSize);
@@ -94,13 +94,13 @@ function Table({ pageSize = 5 }) {
                       </td>
                       <td className="px-6 py-4 flex">
                         <button
-                          className="bg-blue-500 hover:bg-blue-700 text-white  py-2 px-4 rounded mr-2 ml-auto font-medium text-sm "
+                          className="btn-primary mr-2 ml-auto "
                           onClick={() => handleModalEditExpense(row.id)}
                         >
                           Edit
                         </button>
                         <button
-                          className="bg-red-500 hover:bg-red-700 text-white  py-2 px-4 rounded font-medium text-sm"
+                          className="btn-danger"
                           onClick={() => handleModalDeletExpense(row.id)}
                         >
                           Delete
@@ -122,7 +122,7 @@ function Table({ pageSize = 5 }) {
         {Array.from({ length: pageCount }, (_, i) => (
           <button
             key={i}
-            className={`px-3 py-1 text-base mr-2 rounded-full ${
+            className={`w-8 h-8 text-sm mr-2 rounded-full ${
               i + 1 === currentPage
                 ? "bg-blue-500 text-white"
                 : "bg-gray-200 text-gray-700"
@@ -139,7 +139,10 @@ function Table({ pageSize = 5 }) {
           modalRoot
         )}
       {editModelOpen &&
-        createPortal(<EditExpenseModal toggleModal={toggleModal} />, modalRoot)}
+        createPortal(
+          <EditExpenseModal toggleModalEdit={toggleModalEdit} />,
+          modalRoot
+        )}
     </div>
   );
 }
