@@ -6,6 +6,10 @@ This is a simple web application that allows Titus Ltd employees to track their 
 
 **Stats page: where** the user can see monthly statistics about the submitted expenses.
 
+## Deployment
+
+This project is deployed on Vercel at [titus.vercel.app](https://titus.vercel.app).
+
 ## Features
 
 - Add, edit, and delete expenses
@@ -23,6 +27,7 @@ This is a simple web application that allows Titus Ltd employees to track their 
 - React
 - Kea (for state management)
 - Tailwind CSS (for styling)
+- Chart.js (for data visualization)
 - Supabase (for data storage)
 - PropTypes (for type checking)
 
