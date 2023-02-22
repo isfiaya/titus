@@ -1,13 +1,12 @@
 import { Bar } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import expensesLogic from "../../logic/expensesLogic";
-import { useActions, useValues } from "kea";
-import { useEffect, useState } from "react";
+import { useValues } from "kea";
+import { useState } from "react";
 Chart.register(...registerables);
 
 const Stats = () => {
   const { expenses } = useValues(expensesLogic);
-  const { loadExpenses } = useActions(expensesLogic);
   const groupedExpenses = Array(12).fill(0);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const handleChange = (e) => {
@@ -45,10 +44,6 @@ const Stats = () => {
       },
     ],
   };
-
-  useEffect(() => {
-    loadExpenses();
-  }, []);
 
   return (
     <div className="max-w-2xl mx-auto mt-8">

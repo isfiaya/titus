@@ -12,26 +12,21 @@ const EditExpenseModal = ({ toggleModalEdit }) => {
 
   const validateForm = () => {
     const errors = {};
-
     // Validate claimer name
     if (!formValues.claimer_name) {
       errors.claimer_name = "Claimer name is required";
     }
-
     // Validate expense date
     if (!formValues.expense_date) {
       errors.expense_date = "Date of expense is required";
     }
-
     // Validate description
     if (!formValues.description) {
       errors.description = "Description is required";
     }
-
     // Validate amount
     if (!formValues.amount) {
       errors.amount = "Amount is required";
-      console.log("ruub");
     } else if (isNaN(formValues.amount)) {
       errors.amount = "Amount must be a number";
     } else if (Number(formValues.amount) <= 0) {
@@ -40,14 +35,7 @@ const EditExpenseModal = ({ toggleModalEdit }) => {
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
-  const [formValues, setFormValues] = useState({
-    claimer_name: selectedExpense.claimer_name,
-    expense_date: selectedExpense.expense_date,
-    description: selectedExpense.description,
-    amount: selectedExpense.amount,
-    approved: selectedExpense.approved,
-    id: selectedExpense.id,
-  });
+  const [formValues, setFormValues] = useState(selectedExpense);
   const handleFormChange = (e) => {
     console.log("runnn");
     const { name, value, type, checked } = e.target;

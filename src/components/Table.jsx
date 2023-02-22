@@ -10,7 +10,7 @@ const modalRoot = document.getElementById("modal-root");
 function Table({ pageSize = 5 }) {
   const [currentPage, setCurrentPage] = useState(1);
   const { expenses } = useValues(expensesLogic);
-  const { setSelectedExpenseId, loadExpenses } = useActions(expensesLogic);
+  const { setSelectedExpenseId } = useActions(expensesLogic);
 
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
@@ -43,9 +43,6 @@ function Table({ pageSize = 5 }) {
     { key: "description", label: "Description" },
     { key: "amount", label: "Amount (EUR)" },
   ];
-  useEffect(() => {
-    loadExpenses();
-  }, []);
 
   return (
     <div className="flex flex-col mb-8">
