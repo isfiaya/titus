@@ -22,6 +22,7 @@ This is a simple web application that allows Titus Ltd employees to track their 
 
 - React
 - Kea (for state management)
+- Tailwind CSS (for styling)
 - Supabase (for data storage)
 - PropTypes (for type checking)
 
