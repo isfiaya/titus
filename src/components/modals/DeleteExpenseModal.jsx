@@ -1,8 +1,9 @@
 import { useActions, useValues } from "kea";
 import { useState } from "react";
-import expensesLogic from "../logic/expensesLogic";
-import Modal from "./shared/Modal";
-import SuccessMessage from "./shared/SuccessMessage";
+import expensesLogic from "../../logic/expensesLogic";
+import Modal from "../shared/Modal";
+import SuccessMessage from "../shared/SuccessMessage";
+import PropTypes from "prop-types";
 
 const DeleteExpenseModal = ({ toggleModalDelete }) => {
   const { deleteExpense } = useActions(expensesLogic);
@@ -16,7 +17,10 @@ const DeleteExpenseModal = ({ toggleModalDelete }) => {
   return (
     <Modal toggleModal={toggleModalDelete}>
       {deletedSuccessfully ? (
-        <SuccessMessage toggleModal={toggleModalDelete} />
+        <SuccessMessage
+          toggleModal={toggleModalDelete}
+          labelButton={"Expense deleted successfully"}
+        />
       ) : (
         <>
           <div>
@@ -52,5 +56,7 @@ const DeleteExpenseModal = ({ toggleModalDelete }) => {
     </Modal>
   );
 };
-
+DeleteExpenseModal.propTypes = {
+  toggleModalDelete: PropTypes.func.isRequired,
+};
 export default DeleteExpenseModal;

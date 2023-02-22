@@ -1,8 +1,9 @@
 import { useActions, useValues } from "kea";
 import { useState } from "react";
-import expensesLogic from "../logic/expensesLogic";
-import Modal from "./shared/Modal";
-import SuccessMessage from "./shared/SuccessMessage";
+import expensesLogic from "../../logic/expensesLogic";
+import Modal from "../shared/Modal";
+import SuccessMessage from "../shared/SuccessMessage";
+import PropTypes from "prop-types";
 
 const EditExpenseModal = ({ toggleModalEdit }) => {
   const { updateExpense } = useActions(expensesLogic);
@@ -60,7 +61,10 @@ const EditExpenseModal = ({ toggleModalEdit }) => {
   return (
     <Modal toggleModal={toggleModalEdit}>
       {updatedSuccessfully ? (
-        <SuccessMessage toggleModal={toggleModalEdit} />
+        <SuccessMessage
+          toggleModal={toggleModalEdit}
+          labelButton={"Expense updated successfully"}
+        />
       ) : (
         <>
           <div className="mt-3  sm:mt-0 sm:ml-4 text-left">
@@ -161,5 +165,8 @@ const EditExpenseModal = ({ toggleModalEdit }) => {
       )}
     </Modal>
   );
+};
+EditExpenseModal.propTypes = {
+  toggleModalEdit: PropTypes.func.isRequired,
 };
 export default EditExpenseModal;

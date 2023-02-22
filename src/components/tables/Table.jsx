@@ -1,9 +1,10 @@
 import { useActions, useValues } from "kea";
-import React, { useEffect, useState } from "react";
-import expensesLogic from "../logic/expensesLogic";
-import DeleteExpenseModal from "./DeleteExpenseModal";
+import { useState } from "react";
+import expensesLogic from "../../logic/expensesLogic";
+import DeleteExpenseModal from "../modals/DeleteExpenseModal";
 import { createPortal } from "react-dom";
-import EditExpenseModal from "./EditExpenseModal";
+import EditExpenseModal from "../modals/EditExpenseModal";
+import PropTypes from "prop-types";
 
 const modalRoot = document.getElementById("modal-root");
 
@@ -143,5 +144,7 @@ function Table({ pageSize = 5 }) {
     </div>
   );
 }
-
+Table.propTypes = {
+  pageSize: PropTypes.number,
+};
 export default Table;

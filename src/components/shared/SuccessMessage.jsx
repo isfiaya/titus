@@ -1,7 +1,8 @@
-function SuccessMessage({ toggleModal }) {
+import PropTypes from "prop-types";
+function SuccessMessage({ toggleModal, labelButton }) {
   return (
     <div className="text-center ">
-      <p className="text-base text-gray-500">Expense updated successfully</p>
+      <p className="text-base text-gray-500">{labelButton}</p>
 
       <button
         type="button"
@@ -13,5 +14,8 @@ function SuccessMessage({ toggleModal }) {
     </div>
   );
 }
-
+SuccessMessage.propTypes = {
+  toggleModal: PropTypes.func.isRequired,
+  labelButton: PropTypes.string.isRequired,
+};
 export default SuccessMessage;

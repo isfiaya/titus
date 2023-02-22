@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import PropTypes from "prop-types";
 
 const Form = ({ fields, submitFunction, submitButtonLabel }) => {
   const [formErrors, setFormErrors] = useState({});
@@ -128,5 +129,43 @@ const Form = ({ fields, submitFunction, submitButtonLabel }) => {
     </form>
   );
 };
-
+Form.propTypes = {
+  fields: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+      type: PropTypes.oneOf([
+        "text",
+        "email",
+        "password",
+        "checkbox",
+        "select",
+        "date",
+        "number",
+      ]).isRequired,
+      options: PropTypes.arrayOf(
+        PropTypes.shape({
+          value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+            .isRequired,
+          label: PropTypes.string.isRequired,
+        })
+      ),
+      placeholder: PropTypes.string,
+      initialValue: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+        PropTypes.bool,
+      ]),
+      required: PropTypes.bool,
+      validationRules: PropTypes.arrayOf(
+        PropTypes.shape({
+          validate: PropTypes.func.isRequired,
+          message: PropTypes.string.isRequired,
+        })
+      ),
+    })
+  ).isRequired,
+  submitFunction: PropTypes.func.isRequired,
+  submitButtonLabel: PropTypes.string.isRequired,
+};
 export default Form;

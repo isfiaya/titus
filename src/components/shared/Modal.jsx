@@ -1,4 +1,6 @@
-const Modal = ({ toggleModal, children }) => {
+import PropTypes from "prop-types";
+
+function Modal({ toggleModal, children }) {
   return (
     <div className="fixed z-10 inset-0 overflow-y-auto">
       <div className="flex items-center justify-center min-h-screen pt-4 px-4 text-center">
@@ -16,6 +18,9 @@ const Modal = ({ toggleModal, children }) => {
       </div>
     </div>
   );
+}
+Modal.propTypes = {
+  toggleModal: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
 };
-
 export default Modal;

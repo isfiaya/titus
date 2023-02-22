@@ -3,9 +3,9 @@ import expensesLogic from "../../logic/expensesLogic";
 import { useActions } from "kea";
 import Spinner from "../../components/shared/Spinner";
 import Alert from "../../components/shared/Alert";
-import Form from "../../components/Form";
+import Form from "../../components/forms/Form";
 import fields from "../../constants/fields";
-const Table = lazy(() => import("../../components/Table"));
+const Table = lazy(() => import("../../components/tables/Table"));
 
 const Home = () => {
   const { saveExpense } = useActions(expensesLogic);
