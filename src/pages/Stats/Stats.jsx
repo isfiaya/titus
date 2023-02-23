@@ -3,23 +3,28 @@ import { Chart, registerables } from "chart.js";
 import expensesLogic from "../../logic/expensesLogic";
 import { useValues } from "kea";
 import { useState } from "react";
+
 Chart.register(...registerables);
 
 const Stats = () => {
   const { expenses } = useValues(expensesLogic);
-  const groupedExpenses = Array(12).fill(0);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
-  const handleChange = (e) => {
-    setSelectedYear(Number(e.target.value));
-  };
+
+  const groupedExpenses = Array(12).fill(0);
+
   const filteredExpenses = expenses.filter((expense) => {
     const year = new Date(expense.expense_date).getFullYear();
     return year === selectedYear;
   });
+
   filteredExpenses.forEach((expense) => {
     const month = new Date(expense.expense_date).getMonth();
     groupedExpenses[month] += expense.amount;
   });
+
+  const handleChange = (e) => {
+    setSelectedYear(Number(e.target.value));
+  };
 
   const data = {
     labels: [
@@ -61,10 +66,12 @@ const Stats = () => {
             value={selectedYear}
             onChange={handleChange}
           >
-            <option value={2023}>2023</option>
-            <option value={2022}>2022</option>
-            <option value={2021}>2021</option>
-            <option value={2020}>2020</option>
+            <option value="">-- Select a year --</option>
+            {Array.from({ length: 150 }, (_, i) => 1900 + i).map((year) => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
           </select>
         </div>
       </div>

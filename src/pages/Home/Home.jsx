@@ -8,11 +8,11 @@ import fields from "../../constants/fields";
 const Table = lazy(() => import("../../components/tables/Table"));
 
 const Home = () => {
-  const { saveExpense } = useActions(expensesLogic);
+  const { addExpense } = useActions(expensesLogic);
   const [showAlert, setShowAlert] = useState(false);
 
   const handelSaveExpense = (formValues) => {
-    saveExpense(formValues);
+    addExpense(formValues);
     setShowAlert(true);
     setTimeout(() => {
       setShowAlert(false);

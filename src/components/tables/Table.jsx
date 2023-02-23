@@ -11,7 +11,7 @@ const modalRoot = document.getElementById("modal-root");
 function Table({ pageSize = 5 }) {
   const [currentPage, setCurrentPage] = useState(1);
   const { expenses } = useValues(expensesLogic);
-  const { setSelectedExpenseId } = useActions(expensesLogic);
+  const { selectExpense } = useActions(expensesLogic);
 
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
@@ -24,11 +24,11 @@ function Table({ pageSize = 5 }) {
   };
   const handleModalEditExpense = async (id) => {
     toggleModalEdit();
-    setSelectedExpenseId(id);
+    selectExpense(id);
   };
   const handleModalDeletExpense = async (id) => {
     setDeleteModalOpen(true);
-    setSelectedExpenseId(id);
+    selectExpense(id);
   };
   const toggleModalDelete = () => {
     setDeleteModalOpen(!deleteModelOpen);
