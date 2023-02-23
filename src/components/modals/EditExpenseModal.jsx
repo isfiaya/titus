@@ -38,13 +38,11 @@ const EditExpenseModal = ({ toggleModalEdit }) => {
   };
   const [formValues, setFormValues] = useState(selectedExpense);
   const handleFormChange = (e) => {
-    console.log("runnn");
     const { name, value, type, checked } = e.target;
     const newValue = type === "checkbox" ? checked : value;
 
     setFormValues((prevValues) => ({ ...prevValues, [name]: newValue }));
     setFormErrors((prevErrors) => {
-      // Create a new object with all the previous errors except for the current input field
       const { [name]: removedError, ...rest } = prevErrors;
       return rest;
     });

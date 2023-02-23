@@ -3,29 +3,31 @@ import { supabase } from '../supabase/init';
 
 const expensesLogic = kea({
   actions: {
-    loadExpenses: true,
     setExpenses: (expenses) => ({ expenses }),
     addExpense: (expense) => ({ expense }),
+    loadExpenses: true,
+    saveExpense: (expense) => ({ expense }),
     updateExpense: (expense) => ({ expense }),
     deleteExpense: (id) => ({ id }),
-    selectExpense: (id) => ({ id }),
+    setSelectedExpenseId: (id) => ({ id }),
   },
   reducers: {
     expenses: [[], {
       setExpenses: (_, { expenses }) => expenses,
-      addExpense: (state, { expense }) => [expense, ...state],
-      updateExpense: (state, { expense }) => state.map((e) => (e.id === expense.id ? expense : e)),
-      deleteExpense: (state, { id }) => state.filter((item) => item.id !== id),
+      addExpense: (expenses, { expense }) => [expense, ...expenses],
+      updateExpense: (expenses, { expense }) => expenses.map((e) => (e.id === expense.id ? expense : e)),
+      deleteExpense: (expenses, { id }) => expenses.filter((item) => item.id !== id),
     }],
     selectedExpenseId: [null, {
-      selectExpense: (_, { id }) => id,
+      setSelectedExpenseId: (_, { id }) => id,
     }],
   },
   selectors: {
     selectedExpense: [
       (s) => [s.expenses, s.selectedExpenseId],
       (expenses, selectedExpenseId) => expenses.find((expense) => expense.id === selectedExpenseId)
-    ],
+    ]
+    ,
   },
   listeners: ({ actions }) => ({
     loadExpenses: async () => {
@@ -38,11 +40,12 @@ const expensesLogic = kea({
         throw new Error(`Failed to load expenses: ${error.message}`);
       }
     },
-    addExpense: async ({ expense }) => {
+    saveExpense: async ({ expense }) => {
       try {
         const { data } = await supabase
           .from('expenses')
           .insert(expense).select();
+        actions.addExpense(data[0]);
       } catch (error) {
         throw new Error(`Failed to save expense: ${error.message}`);
       }

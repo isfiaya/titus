@@ -13,7 +13,7 @@
     @apply rounded  px-4 py-2 bg-red-600 font-medium text-white hover:bg-red-700  text-sm;
   }
   .form-input {
-    @apply bg-gray-50 border border-gray-300 outline-none text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 w-full;
+    @apply bg-gray-50 border border-gray-300 outline-none rounded-[0.25rem] text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 p-2.5 w-full;
   }
   .form-label {
     @apply block font-medium text-gray-700 text-sm;
