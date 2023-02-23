@@ -88,7 +88,9 @@ const EditExpenseModal = ({ toggleModalEdit }) => {
                     <option>Employee C</option>
                   </select>
                   {formErrors.claimer_name && (
-                    <p className="text-red-500">{formErrors.claimer_name}</p>
+                    <p className="form-label text-red-500 font-normal">
+                      {formErrors.claimer_name}
+                    </p>
                   )}
                 </div>
                 <div className="my-4">
@@ -103,7 +105,9 @@ const EditExpenseModal = ({ toggleModalEdit }) => {
                     onChange={handleFormChange}
                   />
                   {formErrors.expense_date && (
-                    <p className="text-red-500">{formErrors.expense_date}</p>
+                    <p className="form-label text-red-500 font-normal">
+                      {formErrors.expense_date}
+                    </p>
                   )}
                 </div>
                 <div className="my-4">
@@ -128,12 +132,14 @@ const EditExpenseModal = ({ toggleModalEdit }) => {
                     name="amount"
                     value={formValues.amount}
                     onChange={handleFormChange}
-                    className={`form-input${
+                    className={`form-input ${
                       formErrors.amount ? "border-red-500" : ""
                     }`}
                   />
                   {formErrors.amount && (
-                    <p className="text-red-500">{formErrors.amount}</p>
+                    <p className="form-label text-red-500 font-normal">
+                      {formErrors.amount}
+                    </p>
                   )}
                 </div>
                 <div className="my-4 flex items-center">

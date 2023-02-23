@@ -8,7 +8,7 @@ const Form = ({ fields, submitFunction, submitButtonLabel }) => {
       (acc, field) => ({ ...acc, [field.name]: field.initialValue }),
       {}
     )
-  ); // dynamically generate initial form values based on fields prop
+  );
   const [isLoading, setIsLoading] = useState(false);
 
   const validateForm = () => {
@@ -109,7 +109,9 @@ const Form = ({ fields, submitFunction, submitButtonLabel }) => {
                 />
               )}
               {formErrors[name] && (
-                <p className="text-red-500">{formErrors[name]}</p>
+                <p className="form-label text-red-500 font-normal">
+                  {formErrors[name]}
+                </p>
               )}
             </div>
           );

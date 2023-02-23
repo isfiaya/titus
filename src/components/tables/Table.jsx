@@ -81,14 +81,18 @@ function Table({ pageSize = 5 }) {
                       {columns.map((column) => (
                         <td
                           key={column.key}
-                          className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                          className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-700"
                         >
                           {row[column.key]}
                         </td>
                       ))}
 
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                        {row["approved"] ? "Yes" : "No"}
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-700">
+                        {row["approved"] ? (
+                          <span className="text-green-500">Yes</span>
+                        ) : (
+                          <span className="text-red-400">No</span>
+                        )}
                       </td>
                       <td className="px-6 py-4 flex">
                         <button
