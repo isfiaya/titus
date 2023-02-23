@@ -49,73 +49,67 @@ function Table({ pageSize = 5 }) {
       <div className=" overflow-x-auto lg:-mx-8">
         <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
           <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-            {expenses.length ? (
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    {columns.map((column) => (
-                      <th
-                        key={column.key}
-                        scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        {column.label}
-                      </th>
-                    ))}
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  {columns.map((column) => (
                     <th
+                      key={column.key}
                       scope="col"
                       className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
-                      Approved
+                      {column.label}
                     </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    ></th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {pageData.map((row, index) => (
-                    <tr key={index}>
-                      {columns.map((column) => (
-                        <td
-                          key={column.key}
-                          className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-700"
-                        >
-                          {row[column.key]}
-                        </td>
-                      ))}
-
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-700">
-                        {row["approved"] ? (
-                          <span className="text-green-500">Yes</span>
-                        ) : (
-                          <span className="text-red-400">No</span>
-                        )}
-                      </td>
-                      <td className="px-6 py-4 flex">
-                        <button
-                          className="btn-primary mr-2 ml-auto "
-                          onClick={() => handleModalEditExpense(row.id)}
-                        >
-                          Edit
-                        </button>
-                        <button
-                          className="btn-danger"
-                          onClick={() => handleModalDeletExpense(row.id)}
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
                   ))}
-                </tbody>
-              </table>
-            ) : (
-              <div className="text-center">
-                <p className="text-base text-gray-500">No expense to show</p>
-              </div>
-            )}
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Approved
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  ></th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {pageData.map((row, index) => (
+                  <tr key={index}>
+                    {columns.map((column) => (
+                      <td
+                        key={column.key}
+                        className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-700"
+                      >
+                        {row[column.key]}
+                      </td>
+                    ))}
+
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-700">
+                      {row["approved"] ? (
+                        <span className="text-green-500">Yes</span>
+                      ) : (
+                        <span className="text-red-400">No</span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4 flex">
+                      <button
+                        className="btn-primary mr-2 ml-auto "
+                        onClick={() => handleModalEditExpense(row.id)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="btn-danger"
+                        onClick={() => handleModalDeletExpense(row.id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

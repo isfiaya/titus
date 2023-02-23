@@ -34,7 +34,7 @@ const expensesLogic = kea({
       try {
         const { data: expenses } = await supabase
           .from('expenses')
-          .select('*');
+          .select('*').order('created_at', { ascending: false });
         actions.setExpenses(expenses);
       } catch (error) {
         throw new Error(`Failed to load expenses: ${error.message}`);
