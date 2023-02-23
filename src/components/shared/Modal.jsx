@@ -12,7 +12,7 @@ function Modal({ toggleModal, children }) {
           <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
         </div>
 
-        <div className="inline-block  bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full ">
+        <div className="inline-block  bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform  sm:my-8 sm:align-middle sm:max-w-lg sm:w-full animate-[fadeOut_300ms_ease-in-out]">
           {children}
         </div>
       </div>
