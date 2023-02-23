@@ -18,6 +18,9 @@
   .form-label {
     @apply block font-medium text-gray-700 text-sm;
   }
+  .nav-link {
+    @apply text-white hover:bg-[#7da4e3] block px-3 py-2 rounded-md font-medium text-sm;
+  }
 }
 
 body {
